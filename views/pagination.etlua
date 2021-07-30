@@ -1,0 +1,25 @@
+<nav class="pagination" role="navigation">
+	<ul class="pagination-list" @click="window.scrollTo(0, 0)">
+		<li x-show="page_num >= 3">
+			<a class="pagination-link" @click="set_page(1)">1</a>
+		</li>
+		<li x-show="page_num >= 4">
+			<span class="pagination-ellipsis">&hellip;</span>
+		</li>
+		<li>
+			<a class="pagination-link" @click="set_page(page_num - 1)" x-show="page_num >= 2" x-text="page_num - 1"></a>
+		</li>
+		<li>
+			<a class="pagination-link is-current" x-text="page_num"></a>
+		</li>
+		<li>
+			<a class="pagination-link" @click="set_page(page_num + 1)" x-show="page_num <= num_pages - 2" x-text="page_num + 1"></a>
+		</li>
+		<li x-show="page_num <= num_pages - 3">
+			<span class="pagination-ellipsis">&hellip;</span>
+		</li>
+		<li x-show="page_num <= num_pages - 1">
+			<a class="pagination-link" @click="set_page(num_pages)" x-text="num_pages"></a>
+		</li>
+	</ul>
+</nav>

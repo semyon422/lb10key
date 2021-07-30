@@ -1,0 +1,32 @@
+@api = http://localhost:8080/api
+@api_key = 0000000000000000000000000000000000000000
+
+###
+GET {{api}}/status
+###
+POST {{api}}/database?k={{api_key}}
+###
+POST {{api}}/beatmaps?b=1563265?k={{api_key}}
+###
+POST {{api}}/beatmaps?s=875519&b=&k={{api_key}}
+###
+PUT {{api}}/scores?k={{api_key}}
+###
+PUT {{api}}/users?k={{api_key}}
+###
+GET {{api}}/scores
+###
+GET {{api}}/scores/433683423
+###
+GET {{api}}/users
+###
+GET {{api}}/users/64811
+###
+GET {{api}}/users/64811/scores
+###
+GET {{api}}/beatmaps
+###
+GET {{api}}/beatmaps/1563265
+###
+GET {{api}}/beatmaps/1563265/scores
+###

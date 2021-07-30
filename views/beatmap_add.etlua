@@ -1,0 +1,72 @@
+<p class="title">
+	add beatmap
+</p>
+<div class="box" x-data="{
+	k: '',
+	b: '',
+	s: '',
+	beatmaps: [],
+	async post() {
+		let response = await fetch('/api/beatmaps', {
+			method: 'POST',
+			body: JSON.stringify({k: this.k, s: this.s, b: this.b}),
+			headers: {'Content-Type': 'application/json'}
+		});
+		if (!response.ok) {
+			alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.beatmaps = response_json.beatmaps
+	},
+}">
+	<div class="field">
+		<label class="label">API key</label>
+		<div class="control">
+			<input class="input" type="password" placeholder="api_key" x-model="k">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Beatmap set id</label>
+		<div class="control">
+			<input class="input" type="text" placeholder="beatmapset_id" x-model="s">
+		</div>
+	</div>
+	<div class="field">
+		<label class="label">Beatmap id</label>
+		<div class="control">
+			<input class="input" type="text" placeholder="beatmap_id" x-model="b">
+		</div>
+	</div>
+	<div class="field">
+		<div class="control">
+			<button class="button is-link" @click="post">Add</button>
+		</div>
+	</div>
+	<p class="subtitle">
+		Added beatmaps
+	</p>
+	<table class="table is-hoverable">
+		<thead>
+			<tr>
+			<th>Creator</th>
+			<th>Version</th>
+			<th>Artist</th>
+			<th>Title</th>
+			<th>Stars</th>
+			<th>PP</th>
+			</tr>
+		</thead>
+		<tbody>
+			<template x-if="Array.isArray(beatmaps)" x-for="beatmap in beatmaps" :key="beatmap">
+				<tr>
+				<td x-text="beatmap.creator"></th>
+				<td><a :href="'/beatmaps/' + beatmap.id" x-text="beatmap.version"></a></th>
+				<td x-text="beatmap.artist"></th>
+				<td x-text="beatmap.title"></th>
+				<td x-text="parseFloat(beatmap.sr).toFixed(2)"></th>
+				<td x-text="parseFloat(beatmap.pp).toFixed(0)"></th>
+				</tr>
+			</template>
+		<tbody>
+	</table>
+</div>

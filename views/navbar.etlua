@@ -1,0 +1,63 @@
+<nav class="navbar" x-data="{
+	open: false,
+	user_id: undefined,
+	router_user_id: undefined,
+	update_cookie() {
+		this.user_id = get_cookie('user_id')
+		this.router_user_id = $router.params?.user_id
+	}
+}" x-init="update_cookie()" @pinecone-start.window="update_cookie()">
+	<div class="navbar-brand">
+		<div class="navbar-item">
+			<strong>10K leaderboard</strong>
+		</div>
+
+		<a
+			role="button"
+			class="navbar-burger" :class="open ? 'is-active' : ''"
+			aria-label="menu"
+			aria-expanded="false"
+			data-target="navbarBasicExample"
+			@click="open = !open"
+		>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+			<span aria-hidden="true"></span>
+		</a>
+	</div>
+
+	<div id="navbarBasicExample" class="navbar-menu" :class="open ? 'is-active' : ''">
+		<div class="navbar-start">
+			<a class="navbar-item" href="/home">Home</a>
+			<a class="navbar-item" href="/users">Users</a>
+			<a class="navbar-item" href="/scores">Scores</a>
+			<a class="navbar-item" href="/beatmaps">Beatmaps</a>
+		</div>
+
+		<div class="navbar-end">
+			<div class="navbar-item">
+				<div class="buttons">
+					<div x-show="!user_id">
+						<div x-show="router_user_id">
+							<a class="button is-primary" @click="set_cookie('user_id', router_user_id); update_cookie();">
+								<strong>Login</strong>
+							</a>
+						</div>
+					</div>
+					<div x-show="user_id">
+						<div x-show="!router_user_id || user_id != router_user_id">
+							<a class="button is-primary" :href="'/users/' + user_id">
+								<strong>Profile</strong>
+							</a>
+						</div>
+						<div x-show="router_user_id && user_id == router_user_id">
+							<a class="button is-primary" @click="delete_cookie('user_id'); update_cookie();">
+								<strong>Logout</strong>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>

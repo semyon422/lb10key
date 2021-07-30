@@ -1,0 +1,101 @@
+<p class="title">
+	beatmap info
+</p>
+<div class="box" x-data="{
+	beatmap: {},
+	scores: [],
+	page_num: 1,
+	per_page: 5,
+	num_pages: 1,
+	per_pages: [5, 10, 20, 50, 100],
+	dropdown_per_page: false,
+	async get(id) {
+		let response = await fetch('/api/beatmaps/' + id)
+		if (!response.ok) {
+			alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.beatmap = response_json.beatmap
+		await this.get_scores()
+	},
+	async get_scores() {
+		let response = await fetch(
+			'/api/beatmaps/' + this.beatmap.id + '/scores' +
+			encode_get_params({
+				per_page: this.per_page,
+				page_num: this.page_num
+			})
+		)
+		if (!response.ok) {
+			alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.scores = response_json.scores
+		this.num_pages = response_json.num_pages
+	},
+	async set_page(page_num) {
+		this.page_num = page_num
+		await this.get_scores()
+	},
+	async set_per_page(per_page) {
+		this.per_page = per_page
+		this.page_num = 1
+		await this.get_scores()
+	},
+}" x-init="get($router.params?.beatmap_id)">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Creator</th>
+				<th>Version</th>
+				<th>Artist</th>
+				<th>Title</th>
+				<th>Stars</th>
+				<th>PP</th>
+				<th>osu! beatmap page</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td x-text="beatmap.creator"></th>
+				<td><a :href="'/beatmaps/' + beatmap.id" x-text="beatmap.version"></a></th>
+				<td x-text="beatmap.artist"></th>
+				<td x-text="beatmap.title"></th>
+				<td x-text="parseFloat(beatmap.sr).toFixed(2)"></th>
+				<td x-text="parseFloat(beatmap.pp).toFixed(0)"></th>
+				<td><a :href="'https://osu.ppy.sh/beatmapsets/' + beatmap.set_id + '#mania/' + beatmap.id" x-text="beatmap.set_id + '#mania/' + beatmap.id"></a></th>
+			</tr>
+		<tbody>
+	</table>
+	<p class="subtitle">
+		Scores
+	</p>
+	<% render("views.dropdown_per_page") %>
+	<table class="table is-hoverable">
+		<thead>
+			<tr>
+			<th>Rank</th>
+			<th>PP</th>
+			<th>Accuracy</th>
+			<th>Score</th>
+			<th>User</th>
+			<th>Date</th>
+			<th>Time ago</th>
+			</tr>
+		</thead>
+		<tbody>
+			<template x-if="Array.isArray(scores)" x-for="(score, index) in scores" :key="score">
+				<tr>
+				<td x-text="index + 1"></th>
+				<td x-text="parseFloat(parseFloat(score.pp).toFixed(0)).toFixed(0)"></th>
+				<td x-text="parseFloat(score.accuracy * 100).toFixed(2) + '%'"></th>
+				<td><a :href="'/scores/' + score.id" x-text="score.score"></a></th>
+				<td><a :href="'/users/' + score.user.id" x-text="score.user.username"></a></th>
+				<td x-text="score.date"></th>
+				<td x-text="score.time_ago"></th>
+				</tr>
+			</template>
+		<tbody>
+	</table>
+	<% render("views.pagination") %>
+</div>

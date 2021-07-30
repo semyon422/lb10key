@@ -1,0 +1,43 @@
+<p class="title">
+	score info
+</p>
+<div class="box" x-data="{
+	score: {},
+	async get(id) {
+		let response = await fetch('/api/scores/' + id)
+		if (!response.ok) {
+			alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.score = response_json.score
+	},
+}" x-init="get($router.params?.score_id)">
+	<table class="table">
+		<thead>
+			<tr>
+			<th>PP</th>
+			<th>Accuracy</th>
+			<th>Score</th>
+			<th>User</th>
+			<th>Version</th>
+			<th>Artist</th>
+			<th>Title</th>
+			<th>Date</th>
+			<th>Time ago</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+			<td x-text="parseFloat(score.pp).toFixed(0)"></th>
+			<td x-text="parseFloat(score.accuracy * 100).toFixed(2) + '%'"></th>
+			<td><a :href="'/scores/' + score.id" x-text="score.score"></a></th>
+			<td><a :href="'/users/' + score.user.id" x-text="score.user.username"></a></th>
+			<td><a :href="'/beatmaps/' + score.beatmap.id" x-text="score.beatmap.version"></a></th>
+			<td x-text="score.beatmap.artist"></th>
+			<td x-text="score.beatmap.title"></th>
+			<td x-text="score.date"></th>
+			<td x-text="score.time_ago"></th>
+			</tr>
+		<tbody>
+	</table>
+</div>

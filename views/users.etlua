@@ -1,0 +1,78 @@
+<p class="title">
+	users
+</p>
+<div class="box" x-data="{
+	users: [],
+	page_num: 1,
+	per_page: 10,
+	num_pages: 1,
+	country: '',
+	dropdown_country: false,
+	dropdown_per_page: false,
+	per_pages: [10, 100, 1000, 10000],
+	async get() {
+		let response = await fetch(
+			'/api/users' +
+			encode_get_params({
+				per_page: this.per_page,
+				page_num: this.page_num
+			}) +
+			'&country=' + this.country
+		)
+		if (!response.ok) {
+			return alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.users = response_json.users
+		this.num_pages = response_json.num_pages
+	},
+	async set_country(country) {
+		this.country = country
+		this.page_num = 1
+		await this.get()
+	},
+	async set_page(page_num) {
+		this.page_num = page_num
+		await this.get()
+	},
+	async set_per_page(per_page) {
+		this.per_page = per_page
+		this.page_num = 1
+		await this.get()
+	},
+}" x-init="get()">
+	<% render("views.dropdown_per_page") %>
+	<table class="table is-hoverable">
+	<thead>
+		<tr>
+		<th>Rank</th>
+		<th>PP</th>
+		<th>Name</th>
+		<th>
+			Country
+			<span class="tag" x-show="country != ''">
+				<span x-text="country"></span>
+				<button class="delete is-small" @click="set_country('')"></button>
+			</span>
+		</th>
+		<th>Accuracy</th>
+		<th>Score count</th>
+		<th>Total score</th>
+		</tr>
+	</thead>
+	<tbody>
+		<template x-if="Array.isArray(users)" x-for="user in users" :key="user">
+			<tr>
+			<td x-text="user.rank"></th>
+			<td x-text="parseFloat(user.total_pp).toFixed(0)"></th>
+			<td><a :href="'/users/' + user.id" x-text="user.username"></a></th>
+			<td><a @click="set_country(user.country)" x-text="user.country"></a></th>
+			<td x-text="parseFloat(user.accuracy * 100).toFixed(2) + '%'"></th>
+			<td x-text="user.score_count"></th>
+			<td x-text="user.total_score"></th>
+			</tr>
+		</template>
+	<tbody>
+	</table>
+	<% render("views.pagination") %>
+</div>

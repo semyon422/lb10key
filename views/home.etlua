@@ -1,0 +1,89 @@
+<p class="title">
+	Home
+</p>
+
+<div class="box" x-data="{
+	beatmaps_count: 0,
+	users_count: 0,
+	scores_count: 0,
+	score: {},
+	beatmap: {},
+	user: {},
+	discord_users_online: 0,
+	async get() {
+		let response = await fetch('/api/status')
+		if (!response.ok) {
+			return alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.beatmaps_count = response_json.beatmaps_count
+		this.users_count = response_json.users_count
+		this.scores_count = response_json.scores_count
+		this.score = response_json.score
+		this.beatmap = response_json.beatmap
+		this.user = response_json.user
+	},
+	async get_discord() {
+		let response = await fetch('https://discord.com/api/guilds/571705589433106474/widget.json')
+		if (!response.ok) {
+			return alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.discord_users_online = response_json.presence_count
+	},
+}" x-init="get(); get_discord();">
+	<div class="columns">
+		<div class="column is-1 is-offset-1">
+			<p>Scores</p>
+			<p x-text="scores_count" class="content is-large"></p>
+		</div>
+		<div class="column is-1">
+			<p>Users</p>
+			<p x-text="users_count" class="content is-large"></p>
+		</div>
+		<div class="column is-3">
+			<p>Beatmaps</p>
+			<p x-text="beatmaps_count" class="content is-large"></p>
+		</div>
+		<div class="column is-2">
+			<p>Last updated beatmap</p>
+			<a :href="'/beatmaps/' + beatmap.id" x-text="beatmap.version" class="content is-large"></a>
+		</div>
+		<div class="column is-2">
+			<p>Top 1 pp player</p>
+			<a :href="'/users/' + user.id" x-text="user.username" class="content is-large"></a>
+		</div>
+	</div>
+	<div class="columns">
+		<div class="content column is-one-third is-offset-1">
+			<p>
+				This site is designed to create a global leaderboard for 10K scores from
+				<a href="https://osu.ppy.sh/beatmapsets?m=3&q=keys%3D10">ranked and loved 10K maps</a>.
+			</p>
+			<p>
+				Score data is obtained by
+				<a href="https://github.com/ppy/osu-api/wiki">osu! API</a>, performance points are calculated using
+				<a href="https://github.com/semyon422/omppc">omppc</a>.
+			</p>
+			<p>
+				If you are interested in chatting about 10K, you can join our <a href="https://discord.gg/PwzcUzk">discord server</a>.
+			</p>
+			<p>
+				If you have a site api key, you can <a href="/beatmaps/add">add beatmaps</a> yourself.
+			</p>
+			<p>
+				Beatmaps are updated every <%= config.scores_update_delay %> seconds.
+				During the update, a new scores is added to the database and old ones are deleted, and the statistics of the affected players are recalculated.
+			</p>
+			<p>
+				Players are updated every <%= config.users_update_delay %> seconds.
+				Information about username and country is being updated.
+				If a player is banned, he is removed from the base.
+			</p>
+		</div>
+		<div class="column is-3 is-offset-1">
+			<p>Discord server members online</p>
+			<a href="https://discord.gg/PwzcUzk" x-text="discord_users_online" class="content is-large"></a>
+		</div>
+	</div>
+</div>

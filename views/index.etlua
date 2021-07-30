@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>10K leaderboard</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css">
+		<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+		<script src="https://cdn.jsdelivr.net/npm/pinecone-router@1.x.x/dist/index.umd.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/pinecone-router-middleware-views@1.x.x/dist/index.umd.js"></script>
+		<script src="https://kit.fontawesome.com/fc2d87444d.js" crossorigin="anonymous"></script>
+		<script src="/static/util.js"></script>
+	</head>
+	<body>
+		<div x-data="router()" x-router>
+			<template x-route="/" x-view="/home"></template>
+			<template x-route="/home" x-view="/home"></template>
+			<template x-route="/users" x-view="/users"></template>
+			<template x-route="/users/:user_id" x-view="/user"></template>
+			<template x-route="/beatmaps" x-view="/beatmaps"></template>
+			<template x-route="/beatmaps/add" x-view="/beatmap_add"></template>
+			<template x-route="/beatmaps/:beatmap_id" x-view="/beatmap"></template>
+			<template x-route="/scores" x-view="/scores"></template>
+			<template x-route="/scores/:score_id" x-view="/score"></template>
+			<template x-route="notfound" x-view="/404"></template>
+		</div>
+		<div class="container"><% render("views.navbar") %></div>
+		<section class="section">
+			<div id="app" class="container"></div>
+		</section>
+		<footer class="footer" style="background: #00000000">
+			<div class="content has-text-centered">
+				<p>
+					Copyright © 2018-<script>document.write(new Date().getFullYear())</script> <a href="/users/4695318">semyon422</a>.
+					All Rights Reserved
+				</p>
+			</div>
+		</footer>
+	</body>
+	<script>
+		function router() {
+			return {
+				settings: {
+					middlewares: {
+						views: {
+							enable: true,
+							basePath: '/views',
+						}
+					}
+				}
+			}
+		}
+	</script>
+</html>

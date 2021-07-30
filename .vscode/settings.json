@@ -1,0 +1,10 @@
+{
+	"Lua.runtime.version": "LuaJIT",
+	"Lua.diagnostics.globals": [
+		"ngx"
+	],
+	"editor.stickyTabStops": true,
+	"editor.formatOnSave": true,
+	"editor.detectIndentation": false,
+	"editor.insertSpaces": false
+}

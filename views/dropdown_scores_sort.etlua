@@ -1,0 +1,27 @@
+<div
+	class="dropdown"
+	:class="dropdown_scores_sort ? 'is-active' : ''"
+	@click="dropdown_scores_sort = !dropdown_scores_sort"
+	@click.away="dropdown_scores_sort = false"
+>
+	<div class="dropdown-trigger">
+		<button class="button">
+			<span x-text="scores_sort"></span>
+			<span class="icon is-small">
+				<i class="fas fa-angle-down"></i>
+			</span>
+		</button>
+	</div>
+	<div class="dropdown-menu" id="dropdown-menu" role="menu">
+		<div class="dropdown-content">
+			<template x-for="current_scores_sort in scores_sorts">
+				<a
+					class="dropdown-item"
+					:class="current_scores_sort == scores_sort ? 'is-active' : ''"
+					x-text="current_scores_sort"
+					@click="set_scores_sort(current_scores_sort)"
+				></a>
+			</template>
+		</div>
+	</div>
+</div>

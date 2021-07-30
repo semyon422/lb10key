@@ -1,0 +1,64 @@
+<p class="title">
+	scores
+</p>
+<div class="box" x-data="{
+	scores: [],
+	page_num: 1,
+	per_page: 10,
+	num_pages: 1,
+	dropdown_per_page: false,
+	per_pages: [10, 100, 1000, 10000],
+	async get() {
+		let response = await fetch(
+			'/api/scores' +
+			encode_get_params({
+				per_page: this.per_page,
+				page_num: this.page_num
+			})
+		)
+		if (!response.ok) {
+			return alert('Error: ' + response.status)
+		}
+		let response_json = await response.json()
+		this.scores = response_json.scores
+		this.num_pages = response_json.num_pages
+	},
+	async set_page(page_num) {
+		this.page_num = page_num
+		await this.get()
+	},
+	async set_per_page(per_page) {
+		this.per_page = per_page
+		this.page_num = 1
+		await this.get()
+	},
+}" x-init="get()">
+	<% render("views.dropdown_per_page") %>
+	<table class="table is-hoverable">
+	<thead>
+		<tr>
+		<th>PP</th>
+		<th>Accuracy</th>
+		<th>Score</th>
+		<th>User</th>
+		<th>Version</th>
+		<th>Title</th>
+		<th>Time ago</th>
+		</tr>
+	</thead>
+	<tbody>
+		<template x-if="Array.isArray(scores)" x-for="score in scores" :key="score">
+			<tr>
+			<td x-text="parseFloat(score.pp).toFixed(0)"></th>
+			<td x-text="parseFloat(score.accuracy * 100).toFixed(2) + '%'"></th>
+			<td><a :href="'/scores/' + score.id" x-text="score.score"></a></th>
+			<td><a :href="'/users/' + score.user.id" x-text="score.user.username"></a></th>
+			<td><a :href="'/beatmaps/' + score.beatmap.id" x-text="score.beatmap.version"></a></th>
+			<td x-text="score.beatmap.title"></th>
+			<td x-text="score.time_ago"></th>
+			</tr>
+		</template>
+	<tbody>
+	</table>
+	<% render("views.pagination") %>
+</div>
