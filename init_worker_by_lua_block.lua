@@ -16,10 +16,11 @@ local function update(premature, path)
 		{
 			method = "PUT",
 			path = path,
+			query = {k = config.api_key},
 		}
 	)
 	if not res then
-		ngx.log(ngx.ERR, "err")
+		ngx.log(ngx.ERR, err)
 		return
 	end
 

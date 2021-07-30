@@ -7,12 +7,16 @@ local score_c = {}
 
 score_c.GET = function(self)
 	local score = Scores:select("order by date desc limit 1")[1]
-	score:get_user()
-	score:get_beatmap()
-	score.time_ago = util.time_ago_in_words(score.date)
+	if score then
+		score:get_user()
+		score:get_beatmap()
+		score.time_ago = util.time_ago_in_words(score.date)
+	end
 
 	local beatmap = Beatmaps:select("order by updated_at desc limit 1")[1]
-	beatmap.updated_ago = util.time_ago_in_words(tonumber(beatmap.updated_at))
+	if beatmap then
+		beatmap.updated_ago = util.time_ago_in_words(tonumber(beatmap.updated_at))
+	end
 
 	local user = Users:select("order by total_pp desc limit 1")[1]
 

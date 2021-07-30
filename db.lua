@@ -16,7 +16,7 @@ local type_fk_id = types.integer({null = false, unsigned = true})
 local type_size = types.integer({null = false, unsigned = true, default = 0})
 local type_hash = "char(32) CHARACTER SET latin1 NOT NULL"
 -- local type_time = types.bigint({unsigned = true})
-local type_time = "TIMESTAMP NOT NULL DEFAULT 0"
+local type_time = "TIMESTAMP NOT NULL"
 
 local options = {
 	engine = "InnoDB",
@@ -35,7 +35,7 @@ table_declarations.scores = {
 
 table_declarations.beatmaps = {
 	{"id", type_id},
-	{"updated_at", types.bigint({unsigned = true})},
+	{"updated_at", types.bigint({unsigned = true}) .. " default 0"},
 	{"set_id", type_fk_id},
 	{"artist", types.varchar},
 	{"title", types.varchar},
@@ -56,7 +56,7 @@ table_declarations.beatmaps = {
 
 table_declarations.users = {
 	{"id", type_id},
-	{"updated_at", types.bigint({unsigned = true})},
+	{"updated_at", types.bigint({unsigned = true}) .. " default 0"},
 	{"username", types.varchar},
 	{"score_count", type_size},
 	{"total_score", type_size},
