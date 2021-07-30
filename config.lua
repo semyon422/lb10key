@@ -15,7 +15,6 @@ config("development", {
 	api_exptime = 1,
 	osu_api_key = secret.osu_api_key,
 	api_key = secret.api_key,
-	api_url = "",
 })
 
 config("production", {
@@ -30,5 +29,4 @@ config("production", {
 	api_exptime = 10,
 	osu_api_key = secret.osu_api_key,
 	api_key = secret.api_key,
-	api_url = "",
 })
