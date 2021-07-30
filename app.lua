@@ -1,3 +1,5 @@
+package.path = package.path .. ";./?.lua;./?/init.lua"
+
 local lapis = require("lapis")
 local respond_to = require("lapis.application").respond_to
 local json_params = require("lapis.application").json_params

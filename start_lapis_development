@@ -1,2 +1,2 @@
 #!/bin/bash
-screen -dmS lapis lapis server development
+screen -dmS lb10k lapis server development
