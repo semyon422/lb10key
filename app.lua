@@ -8,6 +8,7 @@ local auth = require("auth")
 local db = require("db")
 local app = lapis.Application()
 app:enable("etlua")
+app.layout = require("views.layout")
 
 local config = require("lapis.config").get()
 
