@@ -1,5 +1,6 @@
 local schema = require("lapis.db.schema")
 local types = schema.types
+local create_index = schema.create_index
 
 local db = {}
 
@@ -10,6 +11,7 @@ local tables = {
 }
 
 local table_declarations = {}
+local indexes = {}
 
 local type_id = types.id({null = false, unsigned = true})
 local type_fk_id = types.integer({null = false, unsigned = true})
@@ -32,6 +34,7 @@ table_declarations.scores = {
 	{"accuracy", types.float},
 	{"pp", types.float},
 }
+indexes.scores = {"beatmap_id", "user_id", "date", "pp"}
 
 table_declarations.beatmaps = {
 	{"id", type_id},
@@ -53,6 +56,7 @@ table_declarations.beatmaps = {
 	{"pp_dt", types.float},
 	{"od", types.float},
 }
+indexes.beatmaps = {"updated_at", "set_id", "sr"}
 
 table_declarations.users = {
 	{"id", type_id},
@@ -64,6 +68,7 @@ table_declarations.users = {
 	{"accuracy", types.float},
 	{"country", types.varchar},
 }
+indexes.users = {"updated_at", "username", "total_pp", "country"}
 
 function db.drop()
 	for _, table in ipairs(tables) do
@@ -74,6 +79,9 @@ end
 function db.create()
 	for _, table in ipairs(tables) do
 		schema.create_table(table, table_declarations[table], options)
+		if indexes[table] then
+			create_index(table, unpack(indexes[table]))
+		end
 	end
 	return tables
 end
