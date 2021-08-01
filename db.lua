@@ -1,4 +1,5 @@
 local schema = require("lapis.db.schema")
+local lapisdb = require("lapis.db")
 local types = schema.types
 local create_index = schema.create_index
 
@@ -9,6 +10,21 @@ local tables = {
 	"users",
 	"scores",
 }
+
+function db.is_created()
+	local tables_map = {}
+	local res = lapisdb.query("show tables")
+	for _, row in ipairs(res) do
+		local _, table = next(row)
+		tables_map[table] = true
+	end
+	for _, table in ipairs(tables) do
+		if not tables_map[table] then
+			return false
+		end
+	end
+	return true
+end
 
 local table_declarations = {}
 local indexes = {}

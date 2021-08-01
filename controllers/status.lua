@@ -2,10 +2,20 @@ local util = require("lapis.util")
 local Beatmaps = require("models.beatmaps")
 local Scores = require("models.scores")
 local Users = require("models.users")
+local db = require("db")
 
 local score_c = {}
 
 score_c.GET = function(self)
+	if not db.is_created() then
+		return {json = {
+			beatmaps_count = 0,
+			users_count = 0,
+			scores_count = 0,
+			message = "There are no tables in the database."
+		}}
+	end
+
 	local score = Scores:select("order by date desc limit 1")[1]
 	if score then
 		score:get_user()
