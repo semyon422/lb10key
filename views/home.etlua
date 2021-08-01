@@ -85,6 +85,10 @@
 				If you have a site api key, you can <a href="/beatmaps/add">add beatmaps</a> yourself.
 			</p>
 			<p>
+				The site is <a href="https://github.com/semyon422/lb10key">open source</a>.
+				(<a href="/static/old_source_code.7z">old version</a>).
+			</p>
+			<p>
 				Beatmaps are updated every <%= config.scores_update_delay %> seconds.
 				During the update, a new scores is added to the database and old ones are deleted, and the statistics of the affected players are recalculated.
 			</p>
