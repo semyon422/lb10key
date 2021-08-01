@@ -10,6 +10,7 @@
 		<script src="https://cdn.jsdelivr.net/npm/pinecone-router-middleware-views@1.x.x/dist/index.umd.js"></script>
 		<script src="https://kit.fontawesome.com/fc2d87444d.js" crossorigin="anonymous"></script>
 		<script src="/static/util.js"></script>
+		<% render("views.yandex_metrika") %>
 	</head>
 	<body>
 		<div x-data="router()" x-router>
