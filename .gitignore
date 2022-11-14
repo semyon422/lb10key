@@ -2,6 +2,7 @@ lapis
 resty
 temp
 logs
+tree
 secret.lua
 nginx.conf.compiled
 startcmd.bat
