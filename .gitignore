@@ -3,7 +3,7 @@ resty
 temp
 logs
 tree
-secret.lua
+config.lua
 nginx.conf.compiled
 startcmd.bat
 omppc.lua
