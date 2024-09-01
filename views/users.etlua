@@ -10,6 +10,9 @@
 	dropdown_country: false,
 	dropdown_per_page: false,
 	per_pages: [10, 100, 1000, 10000],
+	score_time_range: 'Any time',
+	dropdown_score_time_ranges: false,
+	score_time_ranges: ['Any time', '1 Week', '1 Month', '3 Months', '1 Year'],
 	async get() {
 		let response = await fetch(
 			'/api/users' +
@@ -17,6 +20,7 @@
 				per_page: this.per_page,
 				page_num: this.page_num
 			}) +
+			'&score_time_range=' + this.score_time_range +
 			'&country=' + this.country
 		)
 		if (!response.ok) {
@@ -40,8 +44,13 @@
 		this.page_num = 1
 		await this.get()
 	},
+	async set_score_time_range(score_time_range) {
+		this.score_time_range = score_time_range
+		await this.get()
+	},
 }" x-init="get()">
 	<% render("views.dropdown_per_page") %>
+	<% render("views.dropdown_score_time_range") %>
 	<table class="table is-hoverable">
 	<thead>
 		<tr>
