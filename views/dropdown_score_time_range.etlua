@@ -1,0 +1,28 @@
+<div
+	class="dropdown"
+	title="Only show users with a score within this time"
+	:class="dropdown_score_time_ranges ? 'is-active' : ''"
+	@click="dropdown_score_time_ranges = !dropdown_score_time_ranges"
+	@click.away="dropdown_score_time_ranges = false"
+>
+	<div class="dropdown-trigger">
+		<button class="button">
+			<span x-text="score_time_range"></span>
+			<span class="icon is-small">
+				<i class="fas fa-angle-down"></i>
+			</span>
+		</button>
+	</div>
+	<div class="dropdown-menu" id="dropdown-menu" role="menu">
+		<div class="dropdown-content">
+			<template x-for="current_score_time_range in score_time_ranges">
+				<a
+					class="dropdown-item"
+					:class="current_score_time_range == score_time_range ? 'is-active' : ''"
+					x-text="current_score_time_range"
+					@click="set_score_time_range(current_score_time_range)"
+				></a>
+			</template>
+		</div>
+	</div>
+</div>
